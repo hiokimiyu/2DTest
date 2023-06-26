@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] float _speed;
     bool _isJamp = false;
     float y = 0;
+    int _count = 0;
     void Start()
     {
 
@@ -20,35 +21,27 @@ public class Player : MonoBehaviour
 
         gameObject.transform.position += new Vector3(h, y, 0) * _speed * Time.deltaTime;
 
-        if (_isJamp)
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            y = 3f;
+            Instantiate(_bullet, _bulletPos.position, Quaternion.identity);
+        }
+
+        if (Input.GetButtonDown("Jump") && _count <= 1)
+        {
+            _count++;
+            y = 100f;
         }
         else
         {
             if (gameObject.transform.position.y > -4)
             {
-                y = -9.8f;
+                y = -0.8f;
             }
             else
             {
+                _count = 0;
                 y = 0;
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Instantiate(_bullet, _bulletPos.position, Quaternion.identity, gameObject.transform);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _isJamp = true;
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            _isJamp = false;
         }
     }
 }
